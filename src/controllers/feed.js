@@ -40,6 +40,7 @@ const createPost = (req, res, next) => {
         const error = new Error('No image provided');
         error.statusCode = 422;
         throw error;
+        
     }
 
     const post = new Post({

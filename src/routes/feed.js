@@ -5,8 +5,11 @@ const router = Router();
 
 const { getPosts, createPost, getPost, updatePost, deletePost } = require('../controllers/feed');
 const validations = require('../helpers/validations');
+const tokenVerify = require('../middleware/tokenVerify');
 
-router.get('/posts', getPosts);
+router.get('/posts',[
+    tokenVerify,
+],getPosts);
 
 router.post('/post', [
     body('title').trim().isLength({ min: 5 }),
