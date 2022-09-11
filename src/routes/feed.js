@@ -7,11 +7,10 @@ const { getPosts, createPost, getPost, updatePost, deletePost } = require('../co
 const validations = require('../helpers/validations');
 const tokenVerify = require('../middleware/tokenVerify');
 
-router.get('/posts',[
-    tokenVerify,
-],getPosts);
+router.get('/posts', getPosts);
 
 router.post('/post', [
+    tokenVerify,
     body('title').trim().isLength({ min: 5 }),
     body('content').trim().isLength({ min: 5 }),
     validations,

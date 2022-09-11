@@ -1,14 +1,15 @@
 const { Router } = require('express');
-const { getAuth, signup, login } = require('../controllers/auth');
+const { getAuth, signup, login, revalidateToken } = require('../controllers/auth');
+const tokenVerify = require('../middleware/tokenVerify');
 
 const router = Router();
-
-router.get('/signup', getAuth);
 
 //route to register a new user
 router.post('/signup', signup);
 //route to login
-router.get('/login', login);
+router.post('/login', login);
+//check webtoken
+router.get('/renew', tokenVerify, revalidateToken);
 
 
 module.exports = router;

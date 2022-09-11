@@ -2,12 +2,6 @@ const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-const getAuth = (req, res, next) => {
-    res.json({
-        message: 'Hola :)'
-    });
-}
-
 const signup = (req, res, next) => {
     const {email, password, name} = req.body;
 
@@ -81,9 +75,28 @@ const login = (req, res, next) => {
         });
 }
 
+//Revalidate token
+const revalidateToken = (req, res, next) => {
+    
+    User.findById(req.userId)
+        .then(user => {
+            if(!user){
+                const error = new Error('User not found.');
+                error.statusCode = 401;
+                throw error;
+            }
+            res.json({
+                message: 'Token revalidated!',
+                user
+            });
+        })
+}
+
+
+
 
 module.exports = {
-    getAuth,
     signup,
-    login
+    login,
+    revalidateToken
 }

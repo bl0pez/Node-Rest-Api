@@ -15,6 +15,7 @@ const getPosts = (req, res, next) => {
         .then(count => {
             totalItems = count;
             return Post.find()
+                .sort({ createdAt: -1 })
                 .skip((currentPage - 1) * perPage)
                 .limit(perPage);
         })
@@ -47,9 +48,7 @@ const createPost = (req, res, next) => {
         title, 
         content,
         imageUrl: req.file.filename,
-        creator: {
-            name: 'John Doe',
-        },
+        creator: req.userId
     })
 
     post.save()
@@ -129,6 +128,14 @@ const deletePost = (req, res, next) => {
                 error.statusCode = 404;
                 throw error;
             }
+
+            if(post.creator.toString() !== req.userId){
+                const error = new Error('Not authorized');
+                error.statusCode = 403;
+                throw error;
+            }
+
+
             clearImage(post.imageUrl);
             return Post.deleteOne({ _id: id });
         })
