@@ -87,7 +87,7 @@ const revalidateToken = (req, res, next) => {
             }
             res.json({
                 message: 'Token revalidated!',
-                user
+                userId: user._id.toString()
             });
         })
 }

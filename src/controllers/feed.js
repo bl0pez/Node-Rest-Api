@@ -8,8 +8,6 @@ const getPosts = (req, res, next) => {
     const perPage = 2;
     let totalItems;
 
-    
-
     Post.find()
         .countDocuments()
         .then(count => {
